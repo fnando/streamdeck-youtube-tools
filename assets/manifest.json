@@ -1,0 +1,40 @@
+{
+  "Actions": [
+    {
+      "Icon": "images/action",
+      "Name": "Youtube Elapsed Time",
+      "States": [
+        {
+          "Image": "images/key",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "Loading\n"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "",
+      "UUID": "com.fnando.streamdeck-youtube-elapsed-time"
+    }
+  ],
+  "SDKVersion": 2,
+  "Author": "Nando Vieira",
+  "CodePath": "plugin.html",
+  "PropertyInspectorPath": "propertyinspector.html",
+  "Name": "Youtube Elapsed Time",
+  "Description": "Show the elapsed stream time",
+  "Icon": "images/pluginIcon",
+  "Version": "0.0.0-development",
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "10.11"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Software": {
+    "MinimumVersion": "4.1"
+  }
+}
