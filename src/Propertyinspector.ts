@@ -12,6 +12,14 @@ pi.on("didReceiveGlobalSettings", ({ settings }) => {
     return;
   }
 
+  document.querySelectorAll<HTMLElement>("[data-url]").forEach((node) => {
+    node.onclick = () => {
+      if (node.dataset.url) {
+        pi.openUrl(node.dataset.url);
+      }
+    };
+  });
+
   const button = document.querySelector<HTMLButtonElement>("#save")!;
   const input = document.querySelector<HTMLInputElement>("#apiEndpoint")!;
 

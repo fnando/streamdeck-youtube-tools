@@ -1,5 +1,6 @@
 import { Action } from "../Action";
 import { Settings } from "../Settings";
+import { i18n } from "../config/i18n";
 
 enum State {
   loading = 0,
@@ -42,11 +43,20 @@ export const subscribersAction: Action = {
 
     const update = async () => {
       const channel: Channel = await fetchChannel(settings);
-      console.log({ channel });
+      console.log("[subscribers:channel]", channel);
 
-      plugin.setTitle(String(channel.subscriberCount) + "\n", context, {
-        state: State.ready,
-      });
+      plugin.setTitle(
+        i18n.numberToHuman(channel.subscriberCount, {
+          format: "%n%u",
+          units: {
+            million: "M",
+            thousand: "K",
+            unit: "",
+          },
+        }) + "\n",
+        context,
+        { state: State.ready },
+      );
     };
 
     plugin.setTitle(" ", context, { state: State.loading });

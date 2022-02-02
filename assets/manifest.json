@@ -75,7 +75,7 @@
   "CategoryIcon": "images/category",
   "CodePath": "plugin.html",
   "PropertyInspectorPath": "propertyinspector.html",
-  "Name": "Youtube Elapsed Time",
+  "Name": "Youtube Tools",
   "Description": "Youtube tools for Stream Deck",
   "Icon": "images/pluginIcon",
   "Version": "0.0.0-development",
