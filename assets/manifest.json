@@ -2,13 +2,34 @@
   "Actions": [
     {
       "Icon": "images/action",
-      "Name": "Youtube Elapsed Time",
+      "Name": "Stream Duration",
       "States": [
+        {
+          "Image": "images/loading",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": false
+        },
+        {
+          "Image": "images/offline",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": false
+        },
         {
           "Image": "images/key",
           "TitleAlignment": "bottom",
           "FontSize": "13",
-          "Title": "Loading\n"
+          "Title": ""
+        },
+        {
+          "Image": "images/setup",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": false
         }
       ],
       "SupportedInMultiActions": false,
@@ -18,6 +39,8 @@
   ],
   "SDKVersion": 2,
   "Author": "Nando Vieira",
+  "Category": "YouTube",
+  "CategoryIcon": "images/category",
   "CodePath": "plugin.html",
   "PropertyInspectorPath": "propertyinspector.html",
   "Name": "Youtube Elapsed Time",

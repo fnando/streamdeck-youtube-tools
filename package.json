@@ -1,5 +1,5 @@
 {
-  "name": "@rweich/streamdeck-ts-template",
+  "name": "@fnando/streamdeck-youtube-tools",
   "version": "0.0.0-development",
   "description": "Stream Deck plugin that displays Youtube's livestream elapsed time.",
   "private": true,

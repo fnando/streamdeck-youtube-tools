@@ -4,6 +4,13 @@ const plugin = new Streamdeck().plugin();
 let apiEndpoint = "";
 let tid: NodeJS.Timer;
 
+enum State {
+  loading = 0,
+  offline = 1,
+  ready = 2,
+  setup = 3,
+}
+
 type Settings = {
   apiEndpoint: string;
 };
@@ -53,6 +60,8 @@ plugin.on("willAppear", ({ context }) => {
 });
 
 plugin.on("keyDown", ({ context }) => {
+  plugin.setTitle("", context);
+  plugin.setState(State.loading, context);
   plugin.getSettings(context);
 });
 
@@ -77,19 +86,23 @@ async function refresh(context: string) {
   clearInterval(tid);
 
   if (!apiEndpoint) {
-    plugin.setTitle("Need\nSetup", context);
+    plugin.setTitle("", context);
+    plugin.setState(State.setup, context);
     return;
   }
 
-  plugin.setTitle("Loading\n", context);
+  plugin.setState(State.loading, context);
+  plugin.setTitle("", context);
 
   const broadcasts: Broadcast[] = await fetchBroadcasts();
 
   if (broadcasts.length === 0) {
-    plugin.setTitle("Offline\n", context);
+    plugin.setTitle("", context);
+    plugin.setState(State.offline, context);
     return;
   }
 
+  plugin.setState(State.ready, context);
   const startedAt = Date.parse(broadcasts[0].startedAt);
 
   tid = setInterval(() => {

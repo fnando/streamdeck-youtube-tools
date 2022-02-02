@@ -1,4 +1,5 @@
 import { Streamdeck } from "@rweich/streamdeck-ts";
+import manifest from "../assets/manifest.json";
 
 type Settings = {
   apiEndpoint: string;
@@ -21,13 +22,15 @@ pi.on("didReceiveSettings", ({ settings }) => {
   button.disabled = false;
 
   button.onclick = () => {
-    console.log("api endpoint changed to", input.value);
-    pi.setSettings(pluginId, { apiEndpoint: input.value ?? "" });
+    const payload: Settings = { apiEndpoint: input.value ?? "" };
+    pi.setSettings(pluginId, payload);
   };
 
   input.value = (settings as Settings).apiEndpoint ?? "";
 });
 
-pi.on("websocketOpen", ({ uuid }) => pi.getSettings(uuid));
+pi.on("websocketOpen", ({ uuid }) => {
+  pi.getSettings(uuid);
+});
 
 export default pi;

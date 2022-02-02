@@ -22,7 +22,7 @@ const config = (
   return {
     entry: {
       plugin: "./build/entries/PluginEntry.ts",
-      propertyinspector: "./build/entries/PropertyinspectorEntry.ts",
+      propertyinspector: "./build/entries/PropertyInspectorEntry.ts",
     },
     target: "web",
     output: {
