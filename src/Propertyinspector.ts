@@ -1,13 +1,9 @@
 import { Streamdeck } from "@rweich/streamdeck-ts";
-import manifest from "../assets/manifest.json";
-
-type Settings = {
-  apiEndpoint: string;
-};
+import { Settings } from "./Settings";
 
 const pi = new Streamdeck().propertyinspector();
 
-pi.on("didReceiveSettings", ({ settings }) => {
+pi.on("didReceiveGlobalSettings", ({ settings }) => {
   console.log("got settings", settings);
   const pluginId = pi.pluginUUID ?? "";
 
@@ -23,14 +19,14 @@ pi.on("didReceiveSettings", ({ settings }) => {
 
   button.onclick = () => {
     const payload: Settings = { apiEndpoint: input.value ?? "" };
-    pi.setSettings(pluginId, payload);
+    pi.setGlobalSettings(pluginId, payload);
   };
 
   input.value = (settings as Settings).apiEndpoint ?? "";
 });
 
 pi.on("websocketOpen", ({ uuid }) => {
-  pi.getSettings(uuid);
+  pi.getGlobalSettings(uuid);
 });
 
 export default pi;

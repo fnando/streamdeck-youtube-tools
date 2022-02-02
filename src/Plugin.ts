@@ -1,116 +1,64 @@
 import { Streamdeck } from "@rweich/streamdeck-ts";
+import { Settings } from "./Settings";
+import { Action } from "./Action";
+import { streamDurationAction } from "./actions/streamDurationAction";
+import { subscribersAction } from "./actions/subscribersAction";
 
+let didSettingsLoad = false;
 const plugin = new Streamdeck().plugin();
-let apiEndpoint = "";
-let tid: NodeJS.Timer;
+let settings: Settings = { apiEndpoint: "" };
 
-enum State {
-  loading = 0,
-  offline = 1,
-  ready = 2,
-  setup = 3,
+function loadSettings(context: string, actionId: string) {
+  didSettingsLoad = false;
+
+  const action = getAction(actionId);
+
+  action.prepare({ context, settings, plugin });
+
+  plugin.getGlobalSettings(plugin.pluginUUID!);
+
+  const timer = () => {
+    setTimeout(() => {
+      if (didSettingsLoad) {
+        action.run({ context, settings, plugin });
+      } else {
+        timer();
+      }
+    }, 100);
+  };
+
+  timer();
 }
 
-type Settings = {
-  apiEndpoint: string;
-};
-
-type Elapsed = {
-  hours: number;
-  minutes: number;
-  seconds: number;
-};
-
-type ElapsedKey = keyof Elapsed;
-
-type Broadcast = {
-  id: string;
-  startedAt: string;
-};
-
-function elapsed(seconds: number) {
-  const state: Elapsed = { hours: 0, minutes: 0, seconds };
-
-  if (state.seconds >= 60) {
-    state.minutes = Math.floor(state.seconds / 60);
-    state.seconds = state.seconds - state.minutes * 60;
-  }
-
-  if (state.minutes >= 60) {
-    state.hours = Math.floor(state.minutes / 60);
-    state.minutes = state.minutes - state.hours * 60;
-  }
-
-  if (state.hours === 0 && state.minutes === 0) {
-    return `${Math.floor(state.seconds)}s`;
-  }
-
-  return Object.keys(state)
-    .slice(0, 2)
-    .map(
-      (key) =>
-        state[key as ElapsedKey] > 0 && state[key as ElapsedKey] + key[0],
-    )
-    .filter(Boolean)
-    .join(" ");
-}
-
-plugin.on("willAppear", ({ context }) => {
-  plugin.getSettings(context);
+plugin.on("willAppear", ({ context, action }) => {
+  loadSettings(context, action);
 });
 
-plugin.on("keyDown", ({ context }) => {
-  plugin.setTitle("", context);
-  plugin.setState(State.loading, context);
-  plugin.getSettings(context);
+plugin.on("keyDown", ({ context, action }) => {
+  loadSettings(context, action);
 });
 
-plugin.on("didReceiveSettings", ({ context, settings }) => {
-  console.log("got settings", { settings, context });
+plugin.on("didReceiveGlobalSettings", ({ settings: rawSettings }) => {
+  settings = {
+    apiEndpoint: (rawSettings as Settings).apiEndpoint ?? "",
+  };
 
-  apiEndpoint = (settings as Settings).apiEndpoint ?? "";
-
-  refresh(context);
+  console.log("did receive settings", { settings });
+  didSettingsLoad = true;
 });
 
-async function fetchBroadcasts(): Promise<Broadcast[]> {
-  const endpoint = `${apiEndpoint}/broadcasts?status=active&_key=camelcase`;
+function getAction(actionId: string): Action {
+  const name: string = actionId.split(".").pop() ?? "";
 
-  const response = await fetch(endpoint);
-  const broadcasts = await response.json();
-
-  return broadcasts;
-}
-
-async function refresh(context: string) {
-  clearInterval(tid);
-
-  if (!apiEndpoint) {
-    plugin.setTitle("", context);
-    plugin.setState(State.setup, context);
-    return;
+  if (name === "stream-duration") {
+    return streamDurationAction;
   }
 
-  plugin.setState(State.loading, context);
-  plugin.setTitle("", context);
-
-  const broadcasts: Broadcast[] = await fetchBroadcasts();
-
-  if (broadcasts.length === 0) {
-    plugin.setTitle("", context);
-    plugin.setState(State.offline, context);
-    return;
+  if (name === "subscribers") {
+    return subscribersAction;
   }
 
-  plugin.setState(State.ready, context);
-  const startedAt = Date.parse(broadcasts[0].startedAt);
-
-  tid = setInterval(() => {
-    const now = Date.now();
-    const seconds = (now - startedAt) / 1000;
-
-    plugin.setTitle(elapsed(seconds) + "\n", context);
-  }, 500);
+  throw new Error(`No action found for ${name} (${actionId})`);
 }
 
 export default plugin;

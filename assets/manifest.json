@@ -1,7 +1,7 @@
 {
   "Actions": [
     {
-      "Icon": "images/action",
+      "Icon": "images/stream-duration",
       "Name": "Stream Duration",
       "States": [
         {
@@ -19,10 +19,11 @@
           "ShowTitle": false
         },
         {
-          "Image": "images/key",
+          "Image": "images/live_ready",
           "TitleAlignment": "bottom",
           "FontSize": "13",
-          "Title": ""
+          "Title": "",
+          "ShowTitle": true
         },
         {
           "Image": "images/setup",
@@ -34,7 +35,38 @@
       ],
       "SupportedInMultiActions": false,
       "Tooltip": "",
-      "UUID": "com.fnando.streamdeck-youtube-elapsed-time"
+      "UUID": "com.fnando.sd-yt.stream-duration"
+    },
+
+    {
+      "Icon": "images/subscribers",
+      "Name": "Subscribers",
+      "States": [
+        {
+          "Image": "images/loading",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": false
+        },
+        {
+          "Image": "images/subscribers_ready",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": true
+        },
+        {
+          "Image": "images/setup",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": false
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "",
+      "UUID": "com.fnando.sd-yt.subscribers"
     }
   ],
   "SDKVersion": 2,
@@ -44,7 +76,7 @@
   "CodePath": "plugin.html",
   "PropertyInspectorPath": "propertyinspector.html",
   "Name": "Youtube Elapsed Time",
-  "Description": "Show the elapsed stream time",
+  "Description": "Youtube tools for Stream Deck",
   "Icon": "images/pluginIcon",
   "Version": "0.0.0-development",
   "OS": [
