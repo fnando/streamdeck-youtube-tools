@@ -1,6 +1,7 @@
 import { Action } from "../Action";
 import { Settings } from "../Settings";
 import { i18n } from "../config/i18n";
+import images from "../images.json";
 
 enum State {
   loading = 0,
@@ -30,7 +31,8 @@ export const subscribersAction: Action = {
   prepare({ context, plugin }) {
     console.log("[subscribers:prepare]", { context });
 
-    plugin.setTitle(" ", context, { state: State.loading });
+    plugin.setTitle(" ", context);
+    plugin.setImage(images.loading, context);
   },
 
   run({ context, plugin, settings }) {
@@ -39,14 +41,19 @@ export const subscribersAction: Action = {
     clearInterval(tid[context]);
 
     if (!settings.apiEndpoint) {
-      plugin.setTitle(" ", context, { state: State.setup });
+      plugin.setTitle("", context);
+      plugin.setImage(images.setup, context);
       return;
     }
 
     const update = async () => {
+      plugin.setTitle("", context);
+      plugin.setImage(images.loading, context);
+
       const channel: Channel = await fetchChannel(settings);
       console.log("[subscribers:channel]", channel);
 
+      plugin.setImage(images.subscribersReady, context);
       plugin.setTitle(
         i18n.numberToHuman(channel.subscriberCount, {
           format: "%n%u",
@@ -57,11 +64,9 @@ export const subscribersAction: Action = {
           },
         }) + "\n",
         context,
-        { state: State.ready },
       );
     };
 
-    plugin.setTitle(" ", context, { state: State.loading });
     tid[context] = setInterval(update, 10 * 60 * 1000);
     update();
   },

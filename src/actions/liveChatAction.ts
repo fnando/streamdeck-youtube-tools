@@ -1,6 +1,7 @@
 import { Action } from "../Action";
 import { Settings } from "../Settings";
 import { Broadcast } from "../Broadcast";
+import images from "../images.json";
 
 enum State {
   loading = 0,
@@ -27,23 +28,27 @@ export const liveChatAction: Action = {
   prepare({ context, plugin }) {
     console.log("[live-chat:prepare]", { context });
 
-    plugin.setTitle("", context, { state: State.loading });
+    plugin.setTitle("", context);
+    plugin.setImage(images.loading, context);
   },
 
   async run({ context, plugin, settings, event }) {
     console.log("[live-chat:run]", { context, settings });
 
     if (!settings.apiEndpoint) {
-      plugin.setTitle("", context, { state: State.setup });
+      plugin.setTitle("", context);
+      plugin.setImage(images.setup, context);
       return;
     }
 
-    plugin.setTitle("", context, { state: State.loading });
+    plugin.setTitle("", context);
+    plugin.setImage(images.loading, context);
 
     const broadcasts: Broadcast[] = await fetchBroadcasts(settings);
 
     if (broadcasts.length === 0) {
-      plugin.setTitle("", context, { state: State.offline });
+      plugin.setTitle("", context);
+      plugin.setImage(images.chatOffline, context);
       return;
     }
 

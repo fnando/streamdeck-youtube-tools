@@ -5,28 +5,7 @@
       "Name": "Stream Duration",
       "States": [
         {
-          "Image": "images/loading",
-          "TitleAlignment": "bottom",
-          "FontSize": "13",
-          "Title": "",
-          "ShowTitle": false
-        },
-        {
-          "Image": "images/stream_offline",
-          "TitleAlignment": "bottom",
-          "FontSize": "13",
-          "Title": "",
-          "ShowTitle": false
-        },
-        {
-          "Image": "images/stream_ready",
-          "TitleAlignment": "bottom",
-          "FontSize": "13",
-          "Title": "",
-          "ShowTitle": true
-        },
-        {
-          "Image": "images/setup",
+          "Image": "images/actions/loading",
           "TitleAlignment": "bottom",
           "FontSize": "13",
           "Title": "",
@@ -43,21 +22,7 @@
       "Name": "Subscribers",
       "States": [
         {
-          "Image": "images/loading",
-          "TitleAlignment": "bottom",
-          "FontSize": "13",
-          "Title": "",
-          "ShowTitle": false
-        },
-        {
-          "Image": "images/subscribers_ready",
-          "TitleAlignment": "bottom",
-          "FontSize": "13",
-          "Title": "",
-          "ShowTitle": true
-        },
-        {
-          "Image": "images/setup",
+          "Image": "images/actions/loading",
           "TitleAlignment": "bottom",
           "FontSize": "13",
           "Title": "",
@@ -74,28 +39,7 @@
       "Name": "Live Chat",
       "States": [
         {
-          "Image": "images/loading",
-          "TitleAlignment": "bottom",
-          "FontSize": "13",
-          "Title": "",
-          "ShowTitle": false
-        },
-        {
-          "Image": "images/chat_offline",
-          "TitleAlignment": "bottom",
-          "FontSize": "13",
-          "Title": "",
-          "ShowTitle": false
-        },
-        {
-          "Image": "images/chat_ready",
-          "TitleAlignment": "bottom",
-          "FontSize": "13",
-          "Title": "",
-          "ShowTitle": true
-        },
-        {
-          "Image": "images/setup",
+          "Image": "images/actions/loading",
           "TitleAlignment": "bottom",
           "FontSize": "13",
           "Title": "",

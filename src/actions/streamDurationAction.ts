@@ -2,6 +2,7 @@ import { Action } from "../Action";
 import { Broadcast } from "../Broadcast";
 import { Settings } from "../Settings";
 import { elapsed } from "../helpers/elapsed";
+import images from "../images.json";
 
 enum State {
   loading = 0,
@@ -30,7 +31,8 @@ export const streamDurationAction: Action = {
   prepare({ context, plugin }) {
     console.log("[stream-duration:prepare]", { context });
 
-    plugin.setTitle("", context, { state: State.loading });
+    plugin.setTitle("", context);
+    plugin.setImage(images.loading, context);
   },
 
   async run({ context, plugin, settings }) {
@@ -39,7 +41,8 @@ export const streamDurationAction: Action = {
     clearInterval(tid[context]);
 
     if (!settings.apiEndpoint) {
-      plugin.setTitle("", context, { state: State.setup });
+      plugin.setTitle("", context);
+      plugin.setImage(images.setup, context);
       return;
     }
 
@@ -48,7 +51,8 @@ export const streamDurationAction: Action = {
     const broadcasts: Broadcast[] = await fetchBroadcasts(settings);
 
     if (broadcasts.length === 0) {
-      plugin.setTitle("", context, { state: State.offline });
+      plugin.setTitle("", context);
+      plugin.setImage(images.streamOffline, context);
       return;
     }
 
@@ -58,7 +62,8 @@ export const streamDurationAction: Action = {
       const now = Date.now();
       const seconds = (now - startedAt) / 1000;
 
-      plugin.setTitle(elapsed(seconds) + "\n", context, { state: State.ready });
+      plugin.setTitle(elapsed(seconds) + "\n", context);
+      plugin.setImage(images.streamReady, context);
     }, 500);
   },
 };
