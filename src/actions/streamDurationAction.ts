@@ -22,7 +22,9 @@ export async function fetchBroadcasts(
   const endpoint = settings.apiEndpoint.replace(/\/$/, "");
   const url = `${endpoint}/broadcasts?status=active&_key=camelcase`;
 
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${settings.apiKey}` },
+  });
   const broadcasts = await response.json();
 
   return broadcasts;

@@ -21,16 +21,22 @@ pi.on("didReceiveGlobalSettings", ({ settings }) => {
   });
 
   const button = document.querySelector<HTMLButtonElement>("#save")!;
-  const input = document.querySelector<HTMLInputElement>("#apiEndpoint")!;
+  const endpointInput =
+    document.querySelector<HTMLInputElement>("#apiEndpoint")!;
+  const apiKeyInput = document.querySelector<HTMLInputElement>("#apiKey")!;
 
   button.disabled = false;
 
   button.onclick = () => {
-    const payload: Settings = { apiEndpoint: input.value ?? "" };
+    const payload: Settings = {
+      apiEndpoint: endpointInput.value ?? "",
+      apiKey: apiKeyInput.value,
+    };
     pi.setGlobalSettings(pluginId, payload);
   };
 
-  input.value = (settings as Settings).apiEndpoint ?? "";
+  endpointInput.value = (settings as Settings).apiEndpoint ?? "";
+  apiKeyInput.value = (settings as Settings).apiKey ?? "";
 });
 
 pi.on("websocketOpen", ({ uuid }) => {

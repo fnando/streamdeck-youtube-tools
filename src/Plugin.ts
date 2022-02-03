@@ -6,7 +6,7 @@ import { subscribersAction } from "./actions/subscribersAction";
 
 let didSettingsLoad = false;
 const plugin = new Streamdeck().plugin();
-let settings: Settings = { apiEndpoint: "" };
+let settings: Settings = { apiEndpoint: "", apiKey: "" };
 
 function loadSettings(context: string, actionId: string) {
   didSettingsLoad = false;
@@ -41,6 +41,7 @@ plugin.on("keyDown", ({ context, action }) => {
 plugin.on("didReceiveGlobalSettings", ({ settings: rawSettings }) => {
   settings = {
     apiEndpoint: (rawSettings as Settings).apiEndpoint ?? "",
+    apiKey: (rawSettings as Settings).apiKey ?? "",
   };
 
   console.log("did receive settings", { settings });
