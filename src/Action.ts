@@ -5,6 +5,7 @@ export type ActionParams = {
   settings: Settings;
   context: string;
   plugin: Plugin;
+  event: string;
 };
 
 export type Action = {

@@ -1,7 +1,6 @@
 import { Action } from "../Action";
-import { Broadcast } from "../Broadcast";
 import { Settings } from "../Settings";
-import { elapsed } from "../helpers/elapsed";
+import { Broadcast } from "../Broadcast";
 
 enum State {
   loading = 0,
@@ -9,8 +8,6 @@ enum State {
   ready = 2,
   setup = 3,
 }
-
-let tid: { [key: string]: NodeJS.Timer } = {};
 
 export async function fetchBroadcasts(
   settings: Settings,
@@ -26,17 +23,15 @@ export async function fetchBroadcasts(
   return broadcasts;
 }
 
-export const streamDurationAction: Action = {
+export const liveChatAction: Action = {
   prepare({ context, plugin }) {
-    console.log("[stream-duration:prepare]", { context });
+    console.log("[live-chat:prepare]", { context });
 
     plugin.setTitle("", context, { state: State.loading });
   },
 
-  async run({ context, plugin, settings }) {
-    console.log("[stream-duration:run]", { context, settings });
-
-    clearInterval(tid[context]);
+  async run({ context, plugin, settings, event }) {
+    console.log("[live-chat:run]", { context, settings });
 
     if (!settings.apiEndpoint) {
       plugin.setTitle("", context, { state: State.setup });
@@ -52,13 +47,11 @@ export const streamDurationAction: Action = {
       return;
     }
 
-    const startedAt = Date.parse(broadcasts[0].startedAt);
+    const id = broadcasts[0].id;
+    plugin.setTitle("", context, { state: State.ready });
 
-    tid[context] = setInterval(() => {
-      const now = Date.now();
-      const seconds = (now - startedAt) / 1000;
-
-      plugin.setTitle(elapsed(seconds) + "\n", context, { state: State.ready });
-    }, 500);
+    if (event === "keyDown") {
+      plugin.openUrl(`${settings.apiEndpoint}/open-chat?id=${id}`);
+    }
   },
 };

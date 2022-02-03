@@ -2,25 +2,26 @@ import { Streamdeck } from "@rweich/streamdeck-ts";
 import { Settings } from "./Settings";
 import { Action } from "./Action";
 import { streamDurationAction } from "./actions/streamDurationAction";
+import { liveChatAction } from "./actions/liveChatAction";
 import { subscribersAction } from "./actions/subscribersAction";
 
 let didSettingsLoad = false;
 const plugin = new Streamdeck().plugin();
 let settings: Settings = { apiEndpoint: "", apiKey: "" };
 
-function loadSettings(context: string, actionId: string) {
+function loadSettings(context: string, actionId: string, event: string) {
   didSettingsLoad = false;
 
   const action = getAction(actionId);
 
-  action.prepare({ context, settings, plugin });
+  action.prepare({ context, settings, plugin, event });
 
   plugin.getGlobalSettings(plugin.pluginUUID!);
 
   const timer = () => {
     setTimeout(() => {
       if (didSettingsLoad) {
-        action.run({ context, settings, plugin });
+        action.run({ context, settings, plugin, event });
       } else {
         timer();
       }
@@ -31,11 +32,11 @@ function loadSettings(context: string, actionId: string) {
 }
 
 plugin.on("willAppear", ({ context, action }) => {
-  loadSettings(context, action);
+  loadSettings(context, action, "willAppear");
 });
 
 plugin.on("keyDown", ({ context, action }) => {
-  loadSettings(context, action);
+  loadSettings(context, action, "keyDown");
 });
 
 plugin.on("didReceiveGlobalSettings", ({ settings: rawSettings }) => {
@@ -57,6 +58,10 @@ function getAction(actionId: string): Action {
 
   if (name === "subscribers") {
     return subscribersAction;
+  }
+
+  if (name === "live-chat") {
+    return liveChatAction;
   }
 
   throw new Error(`No action found for ${name} (${actionId})`);

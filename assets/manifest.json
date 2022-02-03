@@ -12,14 +12,14 @@
           "ShowTitle": false
         },
         {
-          "Image": "images/offline",
+          "Image": "images/stream_offline",
           "TitleAlignment": "bottom",
           "FontSize": "13",
           "Title": "",
           "ShowTitle": false
         },
         {
-          "Image": "images/live_ready",
+          "Image": "images/stream_ready",
           "TitleAlignment": "bottom",
           "FontSize": "13",
           "Title": "",
@@ -67,6 +67,44 @@
       "SupportedInMultiActions": false,
       "Tooltip": "",
       "UUID": "com.fnando.sd-yt.subscribers"
+    },
+
+    {
+      "Icon": "images/live_chat",
+      "Name": "Live Chat",
+      "States": [
+        {
+          "Image": "images/loading",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": false
+        },
+        {
+          "Image": "images/chat_offline",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": false
+        },
+        {
+          "Image": "images/chat_ready",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": true
+        },
+        {
+          "Image": "images/setup",
+          "TitleAlignment": "bottom",
+          "FontSize": "13",
+          "Title": "",
+          "ShowTitle": false
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "",
+      "UUID": "com.fnando.sd-yt.live-chat"
     }
   ],
   "SDKVersion": 2,
